@@ -8,6 +8,7 @@ from timm.models.layers import DropPath, to_2tuple, trunc_normal_
 
 from usdsgen.utils.modelutils import load_pretrained
 
+from omegaconf import OmegaConf
 
 class Mlp(nn.Module):
     def __init__(
@@ -459,10 +460,40 @@ def make(**config):
     print(config)
 
 
+# def build_vit(model_cfg, logger):
+#     model = VisionTransformer(norm_layer=partial(nn.LayerNorm, eps=1e-6), **model_cfg)
+#     if model_cfg.pretrained:
+#         load_pretrained(model_cfg, model, logger)
+#     return model
+# def build_vit(model_cfg, logger):
+#     model = VisionTransformer(norm_layer=partial(nn.LayerNorm, eps=1e-6), **model_cfg)
+    
+#     # Bug Fix: Check for the pretrained key in the correct location (.backbone.pretrained)
+#     if model_cfg.backbone and model_cfg.backbone.pretrained:
+#         # Temporarily move the key to the location the old code expects, so load_pretrained works
+#         logger.info("Applying bug fix for pretrained path...")
+#         model_cfg.pretrained = model_cfg.backbone.pretrained
+#         load_pretrained(model_cfg, model, logger)
+#     return model
 def build_vit(model_cfg, logger):
     model = VisionTransformer(norm_layer=partial(nn.LayerNorm, eps=1e-6), **model_cfg)
-    if model_cfg.pretrained:
+    
+    # Final Bug Fix: Unlock the config struct to add the missing key
+    if model_cfg.backbone and model_cfg.backbone.pretrained:
+        logger.info("Applying final bug fix for pretrained path...")
+        
+        # 1. Unlock the config
+        OmegaConf.set_struct(model_cfg, False)
+        
+        # 2. Add the key where the old code expects it
+        model_cfg.pretrained = model_cfg.backbone.pretrained
+        
+        # 3. Re-lock the config (good practice)
+        OmegaConf.set_struct(model_cfg, True)
+        
+        # Now, load_pretrained can find the key
         load_pretrained(model_cfg, model, logger)
+        
     return model
 
     # img_size=config.data.img_size,

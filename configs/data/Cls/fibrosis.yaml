@@ -1,0 +1,15 @@
+name: "fibrosis" # configure your dataset name
+type: "cls_imagenet" # keep the type as cls_imagenet
+num_classes: 2
+
+path:
+  root: "./datasets/Cls/fibrosis" # data path
+  split:
+    train: "train"
+    val: "val"
+    test: "test"
+    vis:
+      samples: 16
+      interval: 10
+
+transform:
