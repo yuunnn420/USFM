@@ -14,10 +14,10 @@ DATASET_NAME="fatty_liver"
 EPOCHS=200
 
 # 【修改這裡】設定批次大小 (Batch Size)，RTX 4090 可以嘗試 32 或 64
-BATCH_SIZE=32
+BATCH_SIZE=16
 
 # 【修改這裡】為這次的實驗取一個獨特的標籤 (tag)，結果會存在對應的資料夾
-EXP_TAG="usfm_${DATASET_NAME}_exp2"
+EXP_TAG="usfm_${DATASET_NAME}_exp4"
 
 
 # --- 2. 硬體與路徑設定 (通常不需要修改) ---

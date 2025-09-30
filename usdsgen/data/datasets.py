@@ -24,6 +24,21 @@ def build_cls_dataset(config, logger):
             # A.RandomRotate90(p=0.5),
             # A.HorizontalFlip(p=0.5),
             # A.VerticalFlip(p=0.5),
+            # --- ↓↓↓ 推薦的增強策略組合 ↓↓↓ ---
+            
+            # 1. 隨機縮放與裁切，讓模型關注局部細節
+            T.RandomResizedCrop(size=(config.data.img_size, config.data.img_size), scale=(0.85, 1.0)),
+            
+            # 2. 隨機水平翻轉
+            T.RandomHorizontalFlip(p=0.5),
+            
+            # 3. 小角度旋轉
+            T.RandomRotation(degrees=10),
+            
+            # 4. 亮度和對比度變化，非常重要！
+            T.ColorJitter(brightness=0.2, contrast=0.2),
+
+            # --- ↑↑↑ 增強策略結束 ↑↑↑ ---
             T.ToTensor(),
             T.Normalize(
                 mean=torch.tensor(IMAGENET_DEFAULT_MEAN),

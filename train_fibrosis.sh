@@ -17,7 +17,7 @@ EPOCHS=200
 BATCH_SIZE=32
 
 # 【修改這裡】為這次的實驗取一個獨特的標籤 (tag)，結果會存在對應的資料夾
-EXP_TAG="usfm_${DATASET_NAME}_exp4"
+EXP_TAG="usfm_${DATASET_NAME}_exp5"
 
 
 # --- 2. 硬體與路徑設定 (通常不需要修改) ---

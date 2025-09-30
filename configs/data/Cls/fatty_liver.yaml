@@ -13,3 +13,4 @@ path:
       interval: 10
 
 transform:
+  img_size: 384
